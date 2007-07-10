@@ -25,7 +25,7 @@
   
 <Content type="html"><![CDATA[
 
-<div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://flickr-gmap-show.googlecode.com/svn/trunk/pics/loading.gif) no-repeat;">
+<div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat;">
 <div id="content__MODULE_ID__"><img id="img__MODULE_ID__" style="width:0px;height:0px;"/></div>
 </div>
 

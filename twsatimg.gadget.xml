@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-<ModulePrefs title="__MSG_title__" description="__MSG_description__" author="wctang" height="450">
+<ModulePrefs title="__MSG_title__" description="__MSG_description__" 
+author="wctang" author_photo="http://farm1.static.flickr.com/219/buddyicons/81718017@N00.jpg" author_email="wctang+twsatimgfeedback@gmail.com"
+author_link="http://blog.wctang.info/" author_location="Kaohsiung, Taiwan" author_affiliation="wctang.info"
+title_url="http://code.google.com/p/taiwan-satimg-gadget/" screenshot="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/twsatimg_gadget_preview.png"
+thumbnail="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/twsatimg_gadget_thumb.png" height="450" category="tools">
   <Locale messages="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/msg-en.xml"/>
   <Locale lang="zh-TW" messages="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/msg-zh-tw.xml"/>
   <Require feature="setprefs"/>

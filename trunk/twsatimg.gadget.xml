@@ -76,9 +76,15 @@ function restart__MODULE_ID__() {
     diff = 0;
     self.setTimeout("tick__MODULE_ID__()", 3000);
 };
+function check_loading() {
+    if(overlay.loading != img.src) {
+        overlay.style.background="url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat;";
+    }
+};
 
 var preload__MODULE_ID__ = new Image();
 preload__MODULE_ID__.onload = function() {
+    overlay.style.background="";
     img.src = this.src;
     overlay.style.width=content.style.width=img.style.width='400px';
     overlay.style.height=content.style.height=img.style.height='430px';
@@ -111,6 +117,8 @@ function tick__MODULE_ID__() {
     diff++;
 
     preload__MODULE_ID__.src = paths[prefs.getInt('area')][prefs.getInt('type')] + y + '-' + m + '-' + d + '-' + h + '.jpg';
+    overlay.loading = preload__MODULE_ID__.src;
+    self.setTimeout("check_loading()", 300);
 };
 
 _IG_RegisterOnloadHandler(tick__MODULE_ID__());

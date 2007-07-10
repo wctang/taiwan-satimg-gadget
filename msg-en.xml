@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messagebundle>
+<msg name="title">Taiwan Satellite Image</msg>
+<msg name="description">Satellite Imagery from Taiwan Central Weather Bureau</msg>
+<msg name="area">Area</msg>
+<msg name="area0">World Wide</msg>
+<msg name="area1">East Asia</msg>
+<msg name="area2">Taiwan</msg>
+<msg name="type">Type</msg>
+<msg name="type0">Gray Scale</msg>
+<msg name="type1">RGB</msg>
+<msg name="type2">Enhanced</msg>
+<msg name="type3">Visible</msg>
+<msg name="time">Time</msg>
+<msg name="time12">12 hour</msg>
+<msg name="time24">24 hour</msg>
+<msg name="time36">36 hour</msg>
+<msg name="time48">48 hour</msg>
+</messagebundle>

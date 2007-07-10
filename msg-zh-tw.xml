@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messagebundle>
+<msg name="title">台灣衛星雲圖</msg>
+<msg name="description">衛星雲圖資料來自中央氣象局</msg>
+<msg name="area">區域</msg>
+<msg name="area0">全球</msg>
+<msg name="area1">東亞</msg>
+<msg name="area2">台灣</msg>
+<msg name="type">種類</msg>
+<msg name="type0">黑白</msg>
+<msg name="type1">彩色</msg>
+<msg name="type2">色調強化</msg>
+<msg name="type3">可見光</msg>
+<msg name="time">時間</msg>
+<msg name="time12">12 小時</msg>
+<msg name="time24">24 小時</msg>
+<msg name="time36">36 小時</msg>
+<msg name="time48">48 小時</msg>
+</messagebundle>

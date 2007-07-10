@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="__MSG_title__" description="__MSG_description__" author="wctang" height="450">
+  <Locale messages="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/msg-en.xml"/>
+  <Locale lang="zh-TW" messages="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/msg-zh-tw.xml"/>
+  <Require feature="setprefs"/>
+</ModulePrefs>
+<UserPref name="area" display_name="__MSG_area__" datatype="enum" default_value="1">
+  <EnumValue value="0" display_value="__MSG_area0__"/> 
+  <EnumValue value="1" display_value="__MSG_area1__"/> 
+  <EnumValue value="2" display_value="__MSG_area2__"/> 
+</UserPref>
+<UserPref name="type" display_name="__MSG_type__" datatype="enum" default_value="1">
+  <EnumValue value="0" display_value="__MSG_type0__"/> 
+  <EnumValue value="1" display_value="__MSG_type1__"/> 
+  <EnumValue value="2" display_value="__MSG_type2__"/> 
+  <EnumValue value="3" display_value="__MSG_type3__"/> 
+</UserPref>
+<UserPref name="time" display_name="__MSG_time__" datatype="enum" default_value="12">
+  <EnumValue value="12" display_value="__MSG_time12__"/> 
+  <EnumValue value="24" display_value="__MSG_time24__"/> 
+  <EnumValue value="36" display_value="__MSG_time36__"/> 
+  <EnumValue value="48" display_value="__MSG_time48__"/> 
+</UserPref>
+  
+<Content type="html"><![CDATA[
+
+<div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://flickr-gmap-show.googlecode.com/svn/trunk/pics/loading.gif) no-repeat;">
+<div id="content__MODULE_ID__"><img id="img__MODULE_ID__" style="width:0px;height:0px;"/></div>
+</div>
+
+<script type="text/javascript">
+var prefs = new _IG_Prefs(__MODULE_ID__);
+var content = _gel('content__MODULE_ID__');
+var img = _gel('img__MODULE_ID__');
+var urlpath = 'http://www.cwb.gov.tw/V5/observe/satellite/Data/';
+var paths = [
+[urlpath + 's0o/s0o-',urlpath + 's0p/s0p-',urlpath + 's0q/s0q-',urlpath + 'sco/sco-'],
+[urlpath + 's1o/s1o-',urlpath + 's1p/s1p-',urlpath + 's1q/s1q-',urlpath + 'sao/sao-'],
+[urlpath + 's3o/s3o-',urlpath + 's3p/s3p-',urlpath + 's3q/s3q-',urlpath + 'sbo/sbo-']];
+var checkindelay = 10;
+var diff = 0;
+var start = prefs.getInt('time');
+
+
+function restart__MODULE_ID__() {
+    diff = 0;
+    self.setTimeout("tick__MODULE_ID__()", 3000);
+};
+
+var preload__MODULE_ID__ = new Image();
+preload__MODULE_ID__.onload = function() {
+    img.src = this.src;
+    content.style.width=img.style.width='400px';
+    content.style.height=img.style.height='430px';
+    self.setTimeout("tick__MODULE_ID__()", 1000);
+};
+preload__MODULE_ID__.onerror = function() {
+    self.setTimeout("tick__MODULE_ID__()", 0);
+};
+function tick__MODULE_ID__() {
+    if((start-diff) < 0) return restart__MODULE_ID__();
+
+    var curr = new Date();
+    var mm = curr.getTime();
+    mm -= (checkindelay*60000 + (start-diff)*3600000);
+    curr.setTime(mm);
+
+    var y = curr.getFullYear();
+    var m = curr.getMonth()+1;
+    if(m < 10) m = '0' + m;
+    var d = curr.getDate();
+    if(d < 10) d = '0' + d;
+    var h = curr.getHours();
+    if(h < 10) h = '0' + h;
+    
+    diff++;
+
+    preload__MODULE_ID__.src = paths[prefs.getInt('area')][prefs.getInt('type')] + y + '-' + m + '-' + d + '-' + h + '.jpg';
+};
+
+_IG_RegisterOnloadHandler(tick__MODULE_ID__());
+</script>
+
+
+]]></Content>
+</Module>

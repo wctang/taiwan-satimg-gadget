@@ -16,4 +16,6 @@
 <msg name="time24">24 小時</msg>
 <msg name="time36">36 小時</msg>
 <msg name="time48">48 小時</msg>
+<msg name="paused">暫停</msg>
+<msg name="playing">播放</msg>
 </messagebundle>

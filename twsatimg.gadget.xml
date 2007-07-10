@@ -26,11 +26,13 @@
 <Content type="html"><![CDATA[
 
 <div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat;">
+<div id="overlay__MODULE_ID__" style="position:absolute;top:0px;left:0px;"></div>
 <div id="content__MODULE_ID__"><img id="img__MODULE_ID__" style="width:0px;height:0px;"/></div>
 </div>
 
 <script type="text/javascript">
 var prefs = new _IG_Prefs(__MODULE_ID__);
+var overlay = _gel('overlay__MODULE_ID__');
 var content = _gel('content__MODULE_ID__');
 var img = _gel('img__MODULE_ID__');
 var urlpath = 'http://www.cwb.gov.tw/V5/observe/satellite/Data/';
@@ -41,6 +43,33 @@ var paths = [
 var checkindelay = 10;
 var diff = 0;
 var start = prefs.getInt('time');
+var ispaused = false;
+var stopped = false;
+
+
+overlay.onmouseover=function() {
+    if(ispaused) {
+        overlay.innerHTML='<h3>__MSG_paused__</h3>';
+    } else {
+        overlay.innerHTML='<h3>__MSG_playing__</h3>';
+    }
+};
+overlay.onmouseout=function() {
+    overlay.innerHTML='';
+};
+overlay.onclick=function() {
+    if(!ispaused) {
+        ispaused = true;
+    } else {
+        ispaused = false;
+        if(stopped) {
+            stopped = false;
+            tick__MODULE_ID__();
+        }
+    }
+    overlay.onmouseover();
+};
+
 
 
 function restart__MODULE_ID__() {
@@ -51,14 +80,17 @@ function restart__MODULE_ID__() {
 var preload__MODULE_ID__ = new Image();
 preload__MODULE_ID__.onload = function() {
     img.src = this.src;
-    content.style.width=img.style.width='400px';
-    content.style.height=img.style.height='430px';
+    overlay.style.width=content.style.width=img.style.width='400px';
+    overlay.style.height=content.style.height=img.style.height='430px';
+    if(ispaused) { stopped = true; return; }
     self.setTimeout("tick__MODULE_ID__()", 1000);
 };
 preload__MODULE_ID__.onerror = function() {
     self.setTimeout("tick__MODULE_ID__()", 0);
 };
 function tick__MODULE_ID__() {
+    if(ispaused) { stopped = true; return; }
+    
     if((start-diff) < 0) return restart__MODULE_ID__();
 
     var curr = new Date();
@@ -74,6 +106,8 @@ function tick__MODULE_ID__() {
     var h = curr.getHours();
     if(h < 10) h = '0' + h;
     
+    if(ispaused) { stopped = true; return; }
+
     diff++;
 
     preload__MODULE_ID__.src = paths[prefs.getInt('area')][prefs.getInt('type')] + y + '-' + m + '-' + d + '-' + h + '.jpg';

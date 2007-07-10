@@ -16,4 +16,6 @@
 <msg name="time24">24 hour</msg>
 <msg name="time36">36 hour</msg>
 <msg name="time48">48 hour</msg>
+<msg name="paused">Paused</msg>
+<msg name="playing">Playing</msg>
 </messagebundle>

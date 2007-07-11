@@ -29,7 +29,7 @@ thumbnail="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/twsatimg_gadget_
   
 <Content type="html"><![CDATA[
 
-<div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat;">
+<div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat top;">
 <div id="overlay__MODULE_ID__" style="position:absolute;top:0px;left:0px;"></div>
 <div id="content__MODULE_ID__"><img id="img__MODULE_ID__" style="width:0px;height:0px;"/></div>
 </div>
@@ -82,7 +82,9 @@ function restart__MODULE_ID__() {
 };
 function check_loading() {
     if(overlay.loading != img.src) {
-        overlay.style.background="url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat;";
+        overlay.style.backgroundImage='url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif)';
+        overlay.style.backgroundRepeat='no-repeat';
+        overlay.style.backgroundPosition='0 0';
     }
 };
 

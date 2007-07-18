@@ -8,6 +8,7 @@ thumbnail="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/twsatimg_gadget_
   <Locale messages="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/msg-en.xml"/>
   <Locale lang="zh-TW" messages="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/msg-zh-tw.xml"/>
   <Require feature="setprefs"/>
+  <Require feature="minimessage"/>
 </ModulePrefs>
 <UserPref name="area" display_name="__MSG_area__" datatype="enum" default_value="1">
   <EnumValue value="0" display_value="__MSG_area0__"/> 
@@ -29,15 +30,65 @@ thumbnail="http://taiwan-satimg-gadget.googlecode.com/svn/trunk/twsatimg_gadget_
   
 <Content type="html"><![CDATA[
 
-<div id="wrap__MODULE_ID__" style="width:100%;height:450px;overflow:auto;background:url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat top;">
-<div id="overlay__MODULE_ID__" style="position:absolute;top:0px;left:0px;"></div>
+<style type="text/css">
+
+#overlay__MODULE_ID__ {
+position:absolute;
+top:0px;
+left:0px;
+width:100%;
+height:430px;
+background:black;
+opacity:0;
+-moz-opacity:0;
+filter:alpha(opacity=0);
+}
+
+#overlay__MODULE_ID__ div {
+background:white;
+position:absolute;
+width:100px;
+height:30px;
+cursor:pointer;
+text-align:center;
+}
+
+#loading__MODULE_ID__ {
+position:absolute;
+top:0px;
+left:0px;
+width:100px;
+height:100px;
+background:url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif) no-repeat;
+}
+
+#wrap__MODULE_ID__ {
+width:100%;
+height:450px;
+overflow:auto;
+}
+
+</style>
+
+<div id="overlay__MODULE_ID__"><div id="pause">Pause</div></div>
+<div id="loading__MODULE_ID__"></div>
+<div id="wrap__MODULE_ID__">
 <div id="content__MODULE_ID__"><img id="img__MODULE_ID__" style="width:0px;height:0px;"/></div>
 </div>
 
+<script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/animation/animation-min.js"></script>
 <script type="text/javascript">
+
+var msg = new _IG_MiniMessage(__MODULE_ID__);
 var prefs = new _IG_Prefs(__MODULE_ID__);
+
 var overlay = _gel('overlay__MODULE_ID__');
+var loading = _gel('loading__MODULE_ID__');
 var content = _gel('content__MODULE_ID__');
+
+var btnPause = _gel('pause');
+
 var img = _gel('img__MODULE_ID__');
 var urlpath = 'http://www.cwb.gov.tw/V5/observe/satellite/Data/';
 var paths = [
@@ -45,23 +96,41 @@ var paths = [
 [urlpath + 's1o/s1o-',urlpath + 's1p/s1p-',urlpath + 's1q/s1q-',urlpath + 'sao/sao-'],
 [urlpath + 's3o/s3o-',urlpath + 's3p/s3p-',urlpath + 's3q/s3q-',urlpath + 'sbo/sbo-']];
 var checkindelay = 10;
-var diff = 0;
 var start = prefs.getInt('time');
+var diff = prefs.getInt('time');
 var ispaused = false;
 var stopped = false;
 
 
-overlay.onmouseover=function() {
-    if(ispaused) {
-        overlay.innerHTML='<h3>__MSG_paused__</h3>';
-    } else {
-        overlay.innerHTML='<h3>__MSG_playing__</h3>';
+var mousein_anim = new YAHOO.util.Anim(overlay, { opacity: { to: .6 } }, .5);
+var mouseout_anim = new YAHOO.util.Anim(overlay, { opacity: { to: 0 } }, .25);
+overlay.curr_in = false;
+function checkoverlay() {
+    if(overlay.curr_in != overlay.req_in) {
+        overlay.curr_in = overlay.req_in;
+        if( overlay.curr_in) {
+            btnPause.style.left = ((overlay.clientWidth - 100)/2)+'px';
+            btnPause.style.top = '20px';
+            
+            if(mouseout_anim.isAnimated())
+                mouseout_anim.stop(true);
+            mousein_anim.animate();
+        } else {
+            if(mousein_anim.isAnimated())
+                mousein_anim.stop(true);
+            mouseout_anim.animate();
+        }
     }
 };
-overlay.onmouseout=function() {
-    overlay.innerHTML='';
+overlay.onmouseover=function() {
+    overlay.req_in = true;
+    self.setTimeout("checkoverlay()", 200);
 };
-overlay.onclick=function() {
+overlay.onmouseout=function() {
+    overlay.req_in = false;
+    self.setTimeout("checkoverlay()", 200);
+};
+btnPause.onclick=function() {
     if(!ispaused) {
         ispaused = true;
     } else {
@@ -71,29 +140,26 @@ overlay.onclick=function() {
             tick__MODULE_ID__();
         }
     }
-    overlay.onmouseover();
 };
 
 
 
 function restart__MODULE_ID__() {
     diff = 0;
-    self.setTimeout("tick__MODULE_ID__()", 3000);
+    self.setTimeout("tick__MODULE_ID__()", 4000);
 };
 function check_loading() {
-    if(overlay.loading != img.src) {
-        overlay.style.backgroundImage='url(http://taiwan-satimg-gadget.googlecode.com/svn/trunk/loading.gif)';
-        overlay.style.backgroundRepeat='no-repeat';
-        overlay.style.backgroundPosition='0 0';
+    if(loading.loading != img.src) {
+        loading.style.display="block";
     }
 };
 
 var preload__MODULE_ID__ = new Image();
 preload__MODULE_ID__.onload = function() {
-    overlay.style.background="";
+    loading.style.display="none";
     img.src = this.src;
-    overlay.style.width=content.style.width=img.style.width='400px';
-    overlay.style.height=content.style.height=img.style.height='430px';
+    content.style.width=img.style.width=this.width+'px';
+    content.style.height=img.style.height=this.height+'px';
     if(ispaused) { stopped = true; return; }
     self.setTimeout("tick__MODULE_ID__()", 1000);
 };
@@ -123,7 +189,7 @@ function tick__MODULE_ID__() {
     diff++;
 
     preload__MODULE_ID__.src = paths[prefs.getInt('area')][prefs.getInt('type')] + y + '-' + m + '-' + d + '-' + h + '.jpg';
-    overlay.loading = preload__MODULE_ID__.src;
+    loading.loading = preload__MODULE_ID__.src;
     self.setTimeout("check_loading()", 300);
 };
 

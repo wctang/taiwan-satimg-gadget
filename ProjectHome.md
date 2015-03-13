@@ -1,0 +1,1 @@
+Gadget display the satellite Imagery from Taiwan Central Weather Bureau
